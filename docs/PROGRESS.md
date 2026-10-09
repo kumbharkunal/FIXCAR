@@ -20,10 +20,10 @@ Keep this file current. After any context compaction, re-read `docs/PLAN.md`, th
 - [x] Commit
 
 ## Phase 2: Design system
-- [ ] `docs/DESIGN.md` (9 chapters, every component state, at least 8 don'ts)
-- [ ] `scripts/contrast.mjs`
-- [ ] Gate: every text pair ≥ 4.5:1 (large ≥ 3:1), controls ≥ 3:1
-- [ ] Commit
+- [x] `docs/DESIGN.md` (9 chapters, every component state, 12 don'ts)
+- [x] `scripts/contrast.mjs` (reads globals.css, falls back to DESIGN.md)
+- [x] Gate: all 21 pairs pass (lowest 5.49:1 text, 5.82:1 controls)
+- [x] Commit
 
 ## Phase 3: Foundations
 - [ ] Scaffold create-next-app 16.4.0 in scratchpad, move in, pin exact versions
