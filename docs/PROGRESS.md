@@ -10,20 +10,20 @@ Keep this file current. After any context compaction, re-read `docs/PLAN.md`, th
 - [x] Commit
 
 ## Phase 1: Content
-- [ ] Refetch pages and all 10 posts; confirm wording
-- [ ] `docs/CONTENT.md` (original vs edited, SEO intent map, slug and 301 list)
-- [ ] `src/content/site.ts` (single typed source)
-- [ ] Download brand assets to `public/brand/` and founder photo to `public/images/founder.jpg`
-- [ ] Logo colours reported (canvas sampling done in research: #0C68AE on white)
-- [ ] Save ui-ux-pro-max output to `docs/research/ui-ux-pro-max.md`
-- [ ] Gate: 43 areas, 17 brands, 3 reviews, 7 FAQs, 3 posts; zero em or en dashes in copy
+- [x] Refetch pages and all 10 posts; confirm wording (archived in `docs/research/source/`)
+- [x] `docs/CONTENT.md` (original vs edited, SEO intent map, slug and 301 list)
+- [x] `src/content/site.ts` (single typed source; typecheck runs in Phase 3)
+- [x] Download brand assets to `public/brand/` and founder photo to `public/images/founder.jpg` (header and footer logos were identical; kept one as `fixcar-logo-blue.png`)
+- [x] Logo colours reported: wordmark blue #0C68AE (cluster #0060B0) on opaque white; large logo is white on transparent. Script version in Phase 3
+- [x] Save ui-ux-pro-max output to `docs/research/ui-ux-pro-max.md`
+- [x] Gate: 43 areas, 17 brands, 3 reviews, 7 FAQs, 3 posts; zero em or en dashes in `site.ts`
 - [x] Commit
 
 ## Phase 2: Design system
 - [ ] `docs/DESIGN.md` (9 chapters, every component state, at least 8 don'ts)
 - [ ] `scripts/contrast.mjs`
 - [ ] Gate: every text pair ≥ 4.5:1 (large ≥ 3:1), controls ≥ 3:1
-- [x] Commit
+- [ ] Commit
 
 ## Phase 3: Foundations
 - [ ] Scaffold create-next-app 16.4.0 in scratchpad, move in, pin exact versions
@@ -37,7 +37,7 @@ Keep this file current. After any context compaction, re-read `docs/PLAN.md`, th
 - [ ] Nav + MobileMenu perfected; BookingSheet + composer
 - [ ] `scripts/qa-menu.mjs` passes
 - [ ] Gate: build, lint, typecheck clean
-- [x] Commit
+- [ ] Commit
 
 ## Phase 4: Sections (page order)
 - [ ] IntroShutter
@@ -56,7 +56,7 @@ Keep this file current. After any context compaction, re-read `docs/PLAN.md`, th
 - [ ] Footer
 - [ ] WhatsAppFab
 - [ ] OG image, icons, JSON-LD
-- [x] Commit
+- [ ] Commit
 
 ## Phase 5: QA loop
 - [ ] Screenshots at 390×844, 768×1024, 1440×900, 1920×1080
@@ -66,7 +66,7 @@ Keep this file current. After any context compaction, re-read `docs/PLAN.md`, th
 - [ ] axe
 - [ ] Lighthouse mobile and desktop (production build); SEO with noindex off
 - [ ] First-load JS and hero bytes measured
-- [x] Commit
+- [ ] Commit
 
 ## Phase 6: Ship
 - [ ] README
