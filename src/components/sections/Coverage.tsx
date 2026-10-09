@@ -1,20 +1,20 @@
-import Image from "next/image";
+import { MagnifyingGlassIcon } from "@phosphor-icons/react/dist/ssr/MagnifyingGlass";
 import { AreaSearch } from "@/components/ui/AreaSearch";
+import { Photo } from "@/components/ui/Photo";
 import { images } from "@/content/images";
 import { coverage } from "@/content/site";
 
 /** "Do we come to you?": a live locality search over the 43 areas, with the Doon valley as atmosphere. */
 export function Coverage() {
   return (
-    <section id="areas" aria-labelledby="areas-title" data-track="areas">
+    <section id="areas" aria-labelledby="areas-title" data-track="areas" className="cv-auto">
       <figure>
         <div className="relative h-[clamp(14rem,36vw,34rem)] bg-paper">
-          <Image
+          <Photo
             src={images[coverage.image]}
             alt={coverage.imageAlt}
             fill
             sizes="100vw"
-            placeholder="blur"
             quality={60}
             className="object-cover"
           />
@@ -29,7 +29,7 @@ export function Coverage() {
           </h2>
           <p className="type-lead max-w-[40ch] text-stone lg:col-span-5 lg:col-start-8 lg:self-end">{coverage.intro}</p>
         </div>
-        <AreaSearch />
+        <AreaSearch searchIcon={<MagnifyingGlassIcon size={20} aria-hidden />} />
       </div>
     </section>
   );

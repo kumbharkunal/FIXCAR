@@ -7,7 +7,7 @@ const formatDate = (iso: string) => dateFormat.format(new Date(`${iso}T12:00:00+
 export function Journal() {
   const [featured, ...rest] = posts;
   return (
-    <section aria-labelledby="journal-title" data-track="journal" className="section pt-0">
+    <section aria-labelledby="journal-title" data-track="journal" className="section cv-auto pt-0">
       <div className="container-x">
         <div className="flex flex-wrap items-end justify-between gap-6 border-t border-hairline pt-12 lg:pt-16">
           <h2 id="journal-title" data-section-heading className="type-display-l max-w-[16ch]">

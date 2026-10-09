@@ -3,6 +3,7 @@
 import type { LenisRef, ReactLenis as ReactLenisType } from "lenis/react";
 import { useEffect, useRef, useState } from "react";
 import { setLenis } from "@/lib/lenis-store";
+import { renderSectionsGradually } from "@/lib/scroll";
 
 interface Loaded {
   ReactLenis: typeof ReactLenisType;
@@ -26,10 +27,12 @@ export function SmoothScroll() {
 
     let cancelled = false;
     const load = () => {
-      Promise.all([import("lenis/react"), import("@/lib/gsap")]).then(([lenisReact, registry]) => {
-        if (cancelled) return;
-        setLoaded({ ReactLenis: lenisReact.ReactLenis, gsap: registry.gsap, ScrollTrigger: registry.ScrollTrigger });
-      });
+      renderSectionsGradually()
+        .then(() => Promise.all([import("lenis/react"), import("@/lib/gsap")]))
+        .then(([lenisReact, registry]) => {
+          if (cancelled) return;
+          setLoaded({ ReactLenis: lenisReact.ReactLenis, gsap: registry.gsap, ScrollTrigger: registry.ScrollTrigger });
+        });
     };
     const handle = window.requestIdleCallback ? window.requestIdleCallback(load, { timeout: 1500 }) : window.setTimeout(load, 700);
     return () => {

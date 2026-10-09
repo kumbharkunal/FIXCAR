@@ -1,3 +1,5 @@
+import { PauseIcon } from "@phosphor-icons/react/dist/ssr/Pause";
+import { PlayIcon } from "@phosphor-icons/react/dist/ssr/Play";
 import { MarqueeMotionLoader } from "@/components/motion/loaders";
 import { MarqueePause } from "@/components/ui/MarqueePause";
 import { brands, ui } from "@/content/site";
@@ -33,7 +35,7 @@ export function BrandsMarquee() {
             {list(true)}
           </div>
         </div>
-        <MarqueePause />
+        <MarqueePause pauseIcon={<PauseIcon size={18} weight="fill" aria-hidden />} playIcon={<PlayIcon size={18} weight="fill" aria-hidden />} />
       </div>
       <MarqueeMotionLoader />
     </section>

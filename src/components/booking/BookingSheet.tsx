@@ -1,9 +1,8 @@
 "use client";
 
-import { XIcon } from "@phosphor-icons/react/X";
 import { AnimatePresence, useDragControls } from "motion/react";
 import * as m from "motion/react-m";
-import { useId, useRef } from "react";
+import { useId, useRef, type ReactNode } from "react";
 import { booking } from "@/content/site";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { useSheetLock } from "@/hooks/useSheetLock";
@@ -16,8 +15,9 @@ const SHEET_SPRING = { type: "spring", stiffness: 380, damping: 36 } as const;
  * The booking composer as a modal: a bottom sheet on phones (drag the handle down to
  * dismiss) and a centred dialog on desktop. Locks scroll, makes the page inert,
  * closes on Escape or a backdrop tap, and returns focus to the button that opened it.
+ * The close icon is rendered on the server and passed in.
  */
-export function BookingSheet() {
+export function BookingSheet({ closeIcon }: { closeIcon: ReactNode }) {
   const { sheetOpen, closeBooking, prefill, getTrigger } = useBooking();
   const isDesktop = useMediaQuery("(min-width: 1024px)");
   const sheetRef = useRef<HTMLDivElement>(null);
@@ -77,7 +77,7 @@ export function BookingSheet() {
                 {booking.sheetTitle}
               </h2>
               <button type="button" className="icon-btn" aria-label={booking.close} onClick={closeBooking}>
-                <XIcon size={20} weight="bold" aria-hidden />
+                {closeIcon}
               </button>
             </div>
             <div className="px-6 pt-6">

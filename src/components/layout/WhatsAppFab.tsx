@@ -46,7 +46,7 @@ export function WhatsAppFab() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
           >
-            <BrandLogo name="whatsapp" size={32} id="fab" />
+            <BrandLogo name="whatsapp" size={32} />
           </m.a>
         ) : null}
       </AnimatePresence>

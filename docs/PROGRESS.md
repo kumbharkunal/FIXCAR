@@ -60,15 +60,15 @@ Keep this file current. After any context compaction, re-read `docs/PLAN.md`, th
 - [x] Commit
 
 ## Phase 5: QA loop
-- [ ] Screenshots at 390×844, 768×1024, 1440×900, 1920×1080
+- [x] Screenshots at 390×844, 768×1024, 1440×900, 1920×1080 (`qa:shots`; no console errors at any size)
 - [x] Critique pass 1 and fixes (390 and 1440: odometer alignment, two-column readings on phones, marquee edge fade, composer name placeholder, final CTA overlay, footer links and grid)
-- [ ] Critique pass 2 and fixes
-- [x] Menu stress test, keyboard, screen reader names, reduced motion (`qa-menu.mjs`)
-- [x] axe (`qa-a11y.mjs`, 4/4 clean)
-- [ ] Reduced-motion screenshots reviewed
-- [ ] Lighthouse mobile and desktop (production build); SEO with noindex off
-- [ ] First-load JS and hero bytes measured
-- [ ] Commit
+- [x] Critique pass 2: anti-slop audit clean (no dashes, meta dots, arrows, caps, eyebrows, mono or coloured headline words; radii only 999px and 28px; racing green the only accent); tablet and large-desktop sheets reviewed
+- [x] Menu stress test, keyboard, screen reader names, reduced motion (`qa:menu` 22/22)
+- [x] axe (`qa:a11y`, 4/4 clean)
+- [x] Reduced-motion screenshots reviewed (final state at first paint, no intro)
+- [x] Lighthouse mobile and desktop (production build); SEO 100 with noindex off
+- [x] First-load JS and hero bytes measured (`qa:js`: 172.4 KB gzip, 149.1 KB brotli)
+- [x] Commit
 
 ## Phase 6: Ship
 - [ ] README
@@ -81,3 +81,7 @@ Keep this file current. After any context compaction, re-read `docs/PLAN.md`, th
 - 2026-10-09: Phases 3 and 4 committed together. The Phase 3 gate (menu frame timing at 4x CPU) was only met after the sections were built, so there was no clean point for a separate Phase 3 commit that builds on its own.
 - 2026-10-09: Menu performance. The body `position: fixed` lock was replaced by a touch-only lock (no relayout, scroll position never moves), the menu content stays mounted (hidden and inert while closed), and page `inert` lands 800 ms after opening. Tab and Shift+Tab are wrapped inside the sheet from the first frame, so focus never escapes during that window.
 - 2026-10-09: Reviews carousel slides are `div role="group"` (axe `list` rule).
+- 2026-10-09: Performance pass. Photos render on the server through `Photo` (getImageProps, no client image component); icons inside client components are rendered on the server and passed in as props; the select caret is a CSS mask; the magnetic pull loads on idle for fine pointers only (Motion `springValue` + `styleEffect`); repeated vectors (wordmark, social marks) come from one SVG sprite; Archivo is subset to the characters the site uses (90.6 KB to 60.8 KB, `assets:font`). First-load JS 192.8 to 172.4 KB gzip; HTML 64.9 to 54.2 KB gzip.
+- 2026-10-09: Below-the-fold sections use `content-visibility: auto` and are rendered one per idle slice before the motion modules or Lenis measure anything (`renderSectionsGradually`); anchor scrolling renders them at once. First paint at 4x CPU: 372 to 200 ms.
+- 2026-10-09: Lighthouse runs locally go through `scripts/h2-proxy.mjs` (HTTP/2, like Vercel). Plain localhost is HTTP/1.1, which Lighthouse simulates as six cold connections and so overstates LCP by about 1 s.
+- 2026-10-09: Budget status. Mobile (HTTP/2): Perf 96, A11y 100, BP 100, SEO 100 with indexing on, TBT 59 ms, CLS 0, LCP 2.78 s simulated. LCP misses the 2.0 s budget: in the fast observed load the first frame is presented after the async Next.js chunks run, so Lighthouse's simulation counts all first-load JS (about 172 KB) as LCP-blocking. Real loads at 4x CPU paint the hero in about 0.2 s locally. Desktop: Perf 100, LCP 0.62 s.

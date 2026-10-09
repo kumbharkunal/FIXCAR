@@ -1,6 +1,5 @@
 "use client";
 
-import { CaretDownIcon } from "@phosphor-icons/react/CaretDown";
 import { track } from "@vercel/analytics";
 import { useId, useState, type FormEvent, type ReactNode } from "react";
 import { BrandLogo } from "@/components/ui/BrandLogo";
@@ -165,7 +164,7 @@ export function BookingComposer({ variant, initial, source, onSubmitted, classNa
           />
         </BarField>
         <button type="submit" className="btn btn-primary has-glyph ml-1.5 min-h-14 self-center">
-          <BrandLogo name="whatsapp" size={30} id={`${id}-wa`} />
+          <BrandLogo name="whatsapp" size={30} />
           {booking.submit}
         </button>
       </form>
@@ -183,7 +182,7 @@ export function BookingComposer({ variant, initial, source, onSubmitted, classNa
           <select id={`${id}-service`} className="input" value={serviceId} onChange={(e) => setServiceId(e.target.value)}>
             {serviceOptions}
           </select>
-          <CaretDownIcon className="select-caret" size={18} weight="bold" aria-hidden />
+          <span className="select-caret" aria-hidden />
         </div>
       </div>
 
@@ -195,7 +194,7 @@ export function BookingComposer({ variant, initial, source, onSubmitted, classNa
           <select id={`${id}-brand`} className="input" value={brand} onChange={(e) => setBrand(e.target.value)}>
             {brandOptions}
           </select>
-          <CaretDownIcon className="select-caret" size={18} weight="bold" aria-hidden />
+          <span className="select-caret" aria-hidden />
         </div>
       </div>
 
@@ -257,7 +256,7 @@ export function BookingComposer({ variant, initial, source, onSubmitted, classNa
 
       <div className="grid gap-3">
         <button type="submit" className="btn btn-primary has-glyph w-full min-h-14">
-          <BrandLogo name="whatsapp" size={30} id={`${id}-wa`} />
+          <BrandLogo name="whatsapp" size={30} />
           {booking.submit}
         </button>
         <p className="type-small text-stone">{booking.help}</p>

@@ -11,7 +11,7 @@ export function Footer() {
       data-inert-group
       data-fab-hide
       data-track="footer"
-      className="surface-racing relative overflow-hidden pb-[max(2rem,env(safe-area-inset-bottom))]"
+      className="surface-racing cv-auto relative overflow-hidden pb-[max(2rem,env(safe-area-inset-bottom))]"
     >
       <div className="container-x grid gap-12 pt-16 lg:grid-cols-12 lg:pt-24">
         <p className="type-display-m max-w-[16ch] lg:col-span-4">{footer.tagline}</p>
@@ -89,7 +89,7 @@ export function Footer() {
             aria-label={business.social.instagram.label}
             className="grid size-11 place-items-center rounded-pill"
           >
-            <BrandLogo name="instagram" size={26} id="footer-ig" />
+            <BrandLogo name="instagram" size={26} />
           </a>
           <a
             href={business.social.facebook.url}
@@ -98,7 +98,7 @@ export function Footer() {
             aria-label={business.social.facebook.label}
             className="grid size-11 place-items-center rounded-pill"
           >
-            <BrandLogo name="facebook" size={26} id="footer-fb" />
+            <BrandLogo name="facebook" size={26} />
           </a>
           <a
             href={waLink()}
@@ -107,7 +107,7 @@ export function Footer() {
             aria-label={ui.whatsAppFab}
             className="grid size-11 place-items-center rounded-pill"
           >
-            <BrandLogo name="whatsapp" size={26} id="footer-wa" />
+            <BrandLogo name="whatsapp" size={26} />
           </a>
         </div>
         <p className="type-small">{footer.copyright}</p>

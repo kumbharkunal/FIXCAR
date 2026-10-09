@@ -1,7 +1,8 @@
+import { XIcon } from "@phosphor-icons/react/dist/ssr/X";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata, Viewport } from "next";
-import { Archivo } from "next/font/google";
+import localFont from "next/font/local";
 import { BookingProvider } from "@/components/booking/BookingContext";
 import { BookingSheet } from "@/components/booking/BookingSheet";
 import { AnchorLinks } from "@/components/layout/AnchorLinks";
@@ -13,16 +14,19 @@ import { MotionProvider } from "@/components/layout/MotionProvider";
 import { Nav } from "@/components/layout/Nav";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { WhatsAppFab } from "@/components/layout/WhatsAppFab";
+import { SvgSprite } from "@/components/ui/SvgSprite";
 import { business, seo, ui } from "@/content/site";
 import { noindex, onVercel, siteUrl } from "@/lib/env";
 import { tokens } from "@/lib/tokens";
 import "./globals.css";
 
-const archivo = Archivo({
-  subsets: ["latin"],
-  axes: ["wdth"],
+// Archivo variable (wdth + wght), subset to the characters the site uses (scripts/font-subset.mjs).
+const archivo = localFont({
+  src: "./fonts/archivo-subset.woff2",
+  weight: "100 900",
   display: "swap",
   variable: "--font-archivo",
+  declarations: [{ prop: "font-stretch", value: "62% 125%" }],
 });
 
 export const metadata: Metadata = {
@@ -75,6 +79,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <script dangerouslySetInnerHTML={{ __html: bootScript }} />
       </head>
       <body>
+        <SvgSprite />
         <a href="#main" className="skip-link" data-inert-group>
           {ui.skipLink}
         </a>
@@ -85,7 +90,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             {children}
             <Footer />
             <WhatsAppFab />
-            <BookingSheet />
+            <BookingSheet closeIcon={<XIcon size={20} weight="bold" aria-hidden />} />
           </BookingProvider>
         </MotionProvider>
         <SmoothScroll />

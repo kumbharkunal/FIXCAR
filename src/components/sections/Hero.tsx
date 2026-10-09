@@ -103,7 +103,7 @@ export function Hero() {
         {/* Phones and tablets: two clear buttons. The first opens the booking sheet. */}
         <div className="hero-fade mt-7 grid gap-3 sm:max-w-md lg:hidden" style={index(1)}>
           <BookButton source="hero" className="btn btn-primary has-glyph min-h-14 w-full">
-            <BrandLogo name="whatsapp" size={30} id="hero-wa" />
+            <BrandLogo name="whatsapp" size={30} />
             {ui.bookOnWhatsApp}
           </BookButton>
           <a href={business.phone.href} className="btn btn-ghost min-h-14 w-full" data-track="hero">

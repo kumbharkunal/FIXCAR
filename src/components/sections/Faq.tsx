@@ -10,7 +10,7 @@ import { waLink } from "@/lib/whatsapp";
  */
 export function Faq() {
   return (
-    <section id="faq" aria-labelledby="faq-title" data-track="faq" className="section">
+    <section id="faq" aria-labelledby="faq-title" data-track="faq" className="section cv-auto">
       <div className="container-x grid gap-12 lg:grid-cols-12 lg:gap-6">
         <div className="lg:col-span-4 lg:self-start lg:sticky lg:top-28">
           <h2 id="faq-title" data-section-heading className="type-display-l">
@@ -24,7 +24,7 @@ export function Faq() {
             data-track="faq"
             className="btn btn-primary has-glyph mt-6"
           >
-            <BrandLogo name="whatsapp" size={28} id="faq-wa" />
+            <BrandLogo name="whatsapp" size={28} />
             {ui.askOnWhatsApp}
           </a>
         </div>

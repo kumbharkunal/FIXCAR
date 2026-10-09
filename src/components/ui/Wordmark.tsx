@@ -1,4 +1,4 @@
-import { WORDMARK_PATH, WORDMARK_VIEWBOX } from "./wordmark-data";
+import { WORDMARK_VIEWBOX } from "./wordmark-data";
 
 interface WordmarkProps {
   className?: string;
@@ -6,7 +6,10 @@ interface WordmarkProps {
   title?: string;
 }
 
-/** The client's "fixcar.in" wordmark, traced from their logo. One colour: it takes `currentColor`. */
+/**
+ * The client's "fixcar.in" wordmark, traced from their logo, from the page sprite
+ * (SvgSprite). One colour: it takes `currentColor`.
+ */
 export function Wordmark({ className, title }: WordmarkProps) {
   return (
     <svg
@@ -17,7 +20,7 @@ export function Wordmark({ className, title }: WordmarkProps) {
       aria-hidden={title ? undefined : true}
       focusable="false"
     >
-      <path fill="currentColor" fillRule="evenodd" d={WORDMARK_PATH} />
+      <use href="#fx-wordmark" />
     </svg>
   );
 }

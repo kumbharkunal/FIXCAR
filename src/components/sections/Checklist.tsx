@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { ChecklistMotionLoader } from "@/components/motion/loaders";
+import { Photo } from "@/components/ui/Photo";
 import { Wordmark } from "@/components/ui/Wordmark";
 import { images } from "@/content/images";
 import { checklist } from "@/content/site";
@@ -10,7 +10,7 @@ import { checklist } from "@/content/site";
  */
 export function Checklist() {
   return (
-    <section aria-labelledby="checklist-title" data-track="checklist" className="section">
+    <section aria-labelledby="checklist-title" data-track="checklist" className="section cv-auto">
       <div className="container-x">
         <h2 id="checklist-title" data-section-heading className="type-display-l max-w-[16ch]">
           {checklist.title}
@@ -41,12 +41,11 @@ export function Checklist() {
 
           <figure className="lg:col-span-4 lg:self-end">
             <div className="frame aspect-square">
-              <Image
+              <Photo
                 src={images[checklist.image]}
                 alt={checklist.imageAlt}
                 fill
                 sizes="(min-width: 1024px) 30vw, 100vw"
-                placeholder="blur"
                 quality={60}
                 className="object-cover"
               />

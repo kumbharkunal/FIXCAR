@@ -1,7 +1,7 @@
 import { CheckIcon } from "@phosphor-icons/react/dist/ssr/Check";
-import Image from "next/image";
 import { ServicesMotionLoader } from "@/components/motion/loaders";
 import { BrandLogo } from "@/components/ui/BrandLogo";
+import { Photo } from "@/components/ui/Photo";
 import { ServicesRail } from "@/components/ui/ServicesRail";
 import { images } from "@/content/images";
 import { services, servicesSection, ui, whatsappCopy } from "@/content/site";
@@ -15,7 +15,7 @@ import { waLink } from "@/lib/whatsapp";
  */
 export function Services() {
   return (
-    <section id="services" aria-labelledby="services-title" data-track="services" className="section overflow-x-clip">
+    <section id="services" aria-labelledby="services-title" data-track="services" className="section cv-auto overflow-x-clip">
       <div className="container-x">
         <h2 id="services-title" data-section-heading className="type-display-l">
           {servicesSection.title}
@@ -46,13 +46,12 @@ export function Services() {
               {services.map((service) => (
                 <li key={service.id} id={`service-${service.id}`} data-bay className="services-bay">
                   <div className="frame aspect-[4/5]">
-                    <Image
+                    <Photo
                       src={images[service.image]}
                       alt={service.imageAlt}
                       fill
                       sizes="(min-width: 1024px) 23rem, 84vw"
-                      placeholder="blur"
-                      quality={60}
+                            quality={60}
                       className="object-cover"
                     />
                   </div>
@@ -73,7 +72,7 @@ export function Services() {
                     data-track={`service-${service.id}`}
                     className="btn btn-primary has-glyph mt-7"
                   >
-                    <BrandLogo name="whatsapp" size={28} id={`bay-${service.id}`} />
+                    <BrandLogo name="whatsapp" size={28} />
                     {servicesSection.bookThis}
                     <span className="sr-only">: {service.name}</span>
                   </a>

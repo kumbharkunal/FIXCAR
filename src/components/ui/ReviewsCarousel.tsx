@@ -1,9 +1,7 @@
 "use client";
 
-import { ArrowLeftIcon } from "@phosphor-icons/react/ArrowLeft";
-import { ArrowRightIcon } from "@phosphor-icons/react/ArrowRight";
 import * as m from "motion/react-m";
-import { useState, type KeyboardEvent } from "react";
+import { useState, type KeyboardEvent, type ReactNode } from "react";
 import { reviewsSection, ui, type Review } from "@/content/site";
 
 const SPRING = { type: "spring", stiffness: 420, damping: 38 } as const;
@@ -12,8 +10,9 @@ const SPRING = { type: "spring", stiffness: 420, damping: 38 } as const;
  * One review at a time: a verbatim sentence large, the full review below. Swipe or drag
  * (Motion), arrow buttons, or the arrow keys. No autoplay. All reviews are in the page
  * for search engines; slides out of view are inert so focus stays on the visible one.
+ * The arrow icons are rendered on the server and passed in.
  */
-export function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
+export function ReviewsCarousel({ reviews, previousIcon, nextIcon }: { reviews: Review[]; previousIcon: ReactNode; nextIcon: ReactNode }) {
   const [index, setIndex] = useState(0);
   const count = reviews.length;
   const go = (next: number) => setIndex(Math.max(0, Math.min(count - 1, next)));
@@ -68,10 +67,10 @@ export function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
 
       <div className="mt-10 flex items-center gap-3">
         <button type="button" className="icon-btn" aria-label={ui.previousReview} disabled={index === 0} onClick={() => go(index - 1)}>
-          <ArrowLeftIcon size={20} aria-hidden />
+          {previousIcon}
         </button>
         <button type="button" className="icon-btn" aria-label={ui.nextReview} disabled={index === count - 1} onClick={() => go(index + 1)}>
-          <ArrowRightIcon size={20} aria-hidden />
+          {nextIcon}
         </button>
         <p className="sr-only" aria-live="polite">
           {reviewsSection.slideLabel(index + 1, count)}

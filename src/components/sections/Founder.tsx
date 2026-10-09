@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { FounderMotionLoader } from "@/components/motion/loaders";
+import { Photo } from "@/components/ui/Photo";
 import { images } from "@/content/images";
 import { founder } from "@/content/site";
 
@@ -10,7 +10,7 @@ import { founder } from "@/content/site";
  */
 export function Founder() {
   return (
-    <section id="our-story" aria-labelledby="founder-title" data-track="founder" className="section">
+    <section id="our-story" aria-labelledby="founder-title" data-track="founder" className="section cv-auto">
       <div className="container-x">
         <h2
           id="founder-title"
@@ -24,12 +24,11 @@ export function Founder() {
         <div className="mt-12 grid gap-12 lg:mt-20 lg:grid-cols-12 lg:gap-6">
           <figure className="lg:col-span-5">
             <div className="frame aspect-[4/5]" data-founder-photo>
-              <Image
+              <Photo
                 src={images.founder}
                 alt={founder.photoAlt}
                 fill
                 sizes="(min-width: 1024px) 40vw, 100vw"
-                placeholder="blur"
                 quality={75}
                 className="object-cover"
               />

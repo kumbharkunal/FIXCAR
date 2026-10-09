@@ -24,7 +24,7 @@ const last = STOPS[STOPS.length - 1];
  */
 export function Process() {
   return (
-    <section id="how-it-works" aria-labelledby="process-title" data-track="process" className="section overflow-x-clip">
+    <section id="how-it-works" aria-labelledby="process-title" data-track="process" className="section cv-auto overflow-x-clip">
       <div data-process-pin className="container-x lg:flex lg:min-h-[100svh] lg:flex-col lg:justify-center lg:py-24">
         <h2 id="process-title" data-section-heading className="type-display-l max-w-[18ch]">
           {processSection.title}

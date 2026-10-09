@@ -5,7 +5,7 @@ import { numbers } from "@/content/site";
 /** Three honest numbers only, set as odometer readings. "Hundreds of car owners" stays as words elsewhere. */
 export function Numbers() {
   return (
-    <section aria-labelledby="numbers-title" data-track="numbers" className="pb-[clamp(4.5rem,10vw,10rem)]">
+    <section aria-labelledby="numbers-title" data-track="numbers" className="cv-auto pb-[clamp(4.5rem,10vw,10rem)]">
       <h2 id="numbers-title" className="sr-only">
         {numbers.title}
       </h2>

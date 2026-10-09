@@ -1,9 +1,8 @@
 "use client";
 
-import { MagnifyingGlassIcon } from "@phosphor-icons/react/MagnifyingGlass";
 import { AnimatePresence, LayoutGroup } from "motion/react";
 import * as m from "motion/react-m";
-import { useDeferredValue, useId, useMemo, useState } from "react";
+import { useDeferredValue, useId, useMemo, useState, type ReactNode } from "react";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 import { areaAliases, areas, coverage, workshopArea, whatsappCopy, type Area } from "@/content/site";
 import { waLink } from "@/lib/whatsapp";
@@ -34,8 +33,9 @@ function search(query: string): Result {
 /**
  * Type an area and the list filters live (Motion layout animation). A match answers
  * "Yes, we come to …" with a pre-filled WhatsApp booking; no match still invites a question.
+ * The search icon is rendered on the server and passed in.
  */
-export function AreaSearch() {
+export function AreaSearch({ searchIcon }: { searchIcon: ReactNode }) {
   const id = useId();
   const [query, setQuery] = useState("");
   const deferred = useDeferredValue(query);
@@ -67,7 +67,7 @@ export function AreaSearch() {
             {coverage.inputLabel}
           </label>
           <div className="relative">
-            <MagnifyingGlassIcon size={20} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-stone" aria-hidden />
+            <span className="pointer-events-none absolute left-4 top-1/2 flex -translate-y-1/2 text-stone">{searchIcon}</span>
             <input
               id={`${id}-area`}
               type="search"
@@ -97,7 +97,7 @@ export function AreaSearch() {
                     data-track="areas"
                     className="btn btn-primary has-glyph mt-5"
                   >
-                    <BrandLogo name="whatsapp" size={28} id={`${id}-wa`} />
+                    <BrandLogo name="whatsapp" size={28} />
                     {action.label}
                   </a>
                 ) : null}

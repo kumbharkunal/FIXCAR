@@ -12,11 +12,14 @@
     "assets:placeholders": "node scripts/placeholders.mjs",
     "assets:logo": "node scripts/trace-logo.mjs",
     "assets:logo-colours": "node scripts/logo-colours.mjs",
+    "assets:icons": "node scripts/make-icons.mjs",
+    "assets:font": "node scripts/font-subset.mjs",
     "qa:shots": "node scripts/qa-shots.mjs",
     "qa:menu": "node scripts/qa-menu.mjs",
     "qa:a11y": "node scripts/qa-a11y.mjs",
     "qa:lighthouse": "node scripts/qa-lighthouse.mjs",
-    "qa:js": "node scripts/qa-js.mjs"
+    "qa:js": "node scripts/qa-js.mjs",
+    "qa:h2": "node scripts/h2-proxy.mjs"
   },
   "dependencies": {
     "@gsap/react": "2.1.2",

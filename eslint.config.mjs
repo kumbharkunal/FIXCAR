@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // QA output and throwaway diagnostics (git-ignored).
+    "qa/**",
   ]),
 ]);
 

@@ -1,3 +1,5 @@
+import { ArrowLeftIcon } from "@phosphor-icons/react/dist/ssr/ArrowLeft";
+import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr/ArrowRight";
 import { StarIcon } from "@phosphor-icons/react/dist/ssr/Star";
 import { ReviewsCarousel } from "@/components/ui/ReviewsCarousel";
 import { business, reviews, reviewsSection } from "@/content/site";
@@ -5,7 +7,7 @@ import { business, reviews, reviewsSection } from "@/content/site";
 /** Three real testimonials from fixcar.in, in their exact words. Never invented. */
 export function Reviews() {
   return (
-    <section id="reviews" aria-labelledby="reviews-title" data-track="reviews" className="section bg-paper">
+    <section id="reviews" aria-labelledby="reviews-title" data-track="reviews" className="section cv-auto bg-paper">
       <div className="container-x">
         <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
           <h2 id="reviews-title" data-section-heading className="type-display-l max-w-[14ch]">
@@ -27,7 +29,11 @@ export function Reviews() {
             </a>
           </div>
         </div>
-        <ReviewsCarousel reviews={reviews} />
+        <ReviewsCarousel
+          reviews={reviews}
+          previousIcon={<ArrowLeftIcon size={20} aria-hidden />}
+          nextIcon={<ArrowRightIcon size={20} aria-hidden />}
+        />
       </div>
     </section>
   );

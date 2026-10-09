@@ -258,7 +258,7 @@ export function Nav() {
             </nav>
             <m.div variants={itemVariants} className="mt-6 grid gap-3">
               <BookButton source="menu" className="btn btn-primary has-glyph w-full min-h-14" onBeforeOpen={closeMenuNow}>
-                <BrandLogo name="whatsapp" size={30} id="menu-wa" />
+                <BrandLogo name="whatsapp" size={30} />
                 {ui.bookOnWhatsApp}
               </BookButton>
               <a href={business.phone.href} className="btn btn-ghost w-full min-h-14" data-track="menu">
@@ -275,7 +275,7 @@ export function Nav() {
                   aria-label={business.social.instagram.label}
                   className="grid size-11 place-items-center rounded-pill"
                 >
-                  <BrandLogo name="instagram" id="menu-ig" />
+                  <BrandLogo name="instagram" />
                 </a>
                 <a
                   href={business.social.facebook.url}
@@ -284,7 +284,7 @@ export function Nav() {
                   aria-label={business.social.facebook.label}
                   className="grid size-11 place-items-center rounded-pill"
                 >
-                  <BrandLogo name="facebook" id="menu-fb" />
+                  <BrandLogo name="facebook" />
                 </a>
                 <a
                   href={waLink()}
@@ -294,7 +294,7 @@ export function Nav() {
                   data-track="menu-social"
                   className="grid size-11 place-items-center rounded-pill"
                 >
-                  <BrandLogo name="whatsapp" id="menu-wa-social" />
+                  <BrandLogo name="whatsapp" />
                 </a>
               </div>
             </m.div>

@@ -7,6 +7,7 @@
  * server-rendered in its final state; the modules only enhance it.
  */
 import dynamic from "next/dynamic";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { IdleMount } from "./IdleMount";
 
 const HeroMotion = dynamic(() => import("./HeroMotion"), { ssr: false });
@@ -17,6 +18,7 @@ const FounderMotion = dynamic(() => import("./FounderMotion"), { ssr: false });
 const ChecklistMotion = dynamic(() => import("./ChecklistMotion"), { ssr: false });
 const OdometerMotion = dynamic(() => import("./OdometerMotion"), { ssr: false });
 const FooterMotion = dynamic(() => import("./FooterMotion"), { ssr: false });
+const MagneticMotion = dynamic(() => import("./MagneticMotion"), { ssr: false });
 
 export function HeroMotionLoader() {
   return (
@@ -80,4 +82,14 @@ export function FooterMotionLoader() {
       <FooterMotion />
     </IdleMount>
   );
+}
+
+/** Fine pointers only: touch screens never download the magnetic pull. */
+export function MagneticMotionLoader() {
+  const finePointer = useMediaQuery("(pointer: fine)");
+  return finePointer ? (
+    <IdleMount>
+      <MagneticMotion />
+    </IdleMount>
+  ) : null;
 }

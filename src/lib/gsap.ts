@@ -8,7 +8,11 @@ import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
+import { renderAllSections } from "@/lib/scroll";
 
+// Real section heights before ScrollTrigger measures anything (pins, starts and ends).
+// The loaders have normally rendered every section by now; this is the safety net.
+renderAllSections();
 gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText, DrawSVGPlugin, MotionPathPlugin);
 ScrollTrigger.config({ ignoreMobileResize: true });
 
