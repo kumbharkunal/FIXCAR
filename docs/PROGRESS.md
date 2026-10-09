@@ -26,44 +26,46 @@ Keep this file current. After any context compaction, re-read `docs/PLAN.md`, th
 - [x] Commit
 
 ## Phase 3: Foundations
-- [ ] Scaffold create-next-app 16.4.0 in scratchpad, move in, pin exact versions
-- [ ] Install runtime and dev dependencies (exact)
-- [ ] `next.config.ts` (images, headers, noindex), env chain, robots, sitemap, manifest
-- [ ] Tokens in `globals.css` (`@theme`), Archivo via next/font
-- [ ] Boot script (intro flag, fonts-ready, `?accent=blue`)
-- [ ] MotionProvider (LazyMotion), SmoothScroll (idle GSAP + Lenis), GSAP registry
-- [ ] `whatsapp.ts`, `analytics.ts`, `cn.ts`, `env.ts`, `jsonld.ts`
-- [ ] Placeholders (`scripts/placeholders.mjs`), wordmark trace (`scripts/trace-logo.mjs`)
-- [ ] Nav + MobileMenu perfected; BookingSheet + composer
-- [ ] `scripts/qa-menu.mjs` passes
-- [ ] Gate: build, lint, typecheck clean
-- [ ] Commit
+- [x] Scaffold create-next-app 16.4.0 in scratchpad, move in, pin exact versions (`.npmrc save-exact=true`)
+- [x] Install runtime and dev dependencies (exact)
+- [x] `next.config.ts` (images, headers, noindex), env chain, robots, sitemap, manifest
+- [x] Tokens in `globals.css` (`@theme`), Archivo via next/font (one variable file, `wdth` axis)
+- [x] Boot script (intro flag, fonts-ready, `?accent=blue`)
+- [x] MotionProvider (LazyMotion), SmoothScroll (idle GSAP + Lenis), GSAP registry
+- [x] `whatsapp.ts`, `cn.ts`, `env.ts`, `jsonld.ts`, `scroll.ts` (analytics events sent by `ClickTracker` and the composer through `track`)
+- [x] Placeholders (`scripts/placeholders.mjs`), wordmark trace (`scripts/trace-logo.mjs`), icons (`scripts/make-icons.mjs`)
+- [x] Nav + mobile menu; BookingSheet + composer
+- [x] `scripts/qa-menu.mjs` passes 22/22 (frames at 4x CPU: p95 16.6 ms, open 16.7, close 8.5; tap to first frame 4 to 8 ms)
+- [x] Gate: build, lint, typecheck clean
+- [x] Commit (together with Phase 4, see the log)
 
 ## Phase 4: Sections (page order)
-- [ ] IntroShutter
-- [ ] Hero (+ composer, CSS load, scroll motion)
-- [ ] BrandsMarquee
-- [ ] Services (desktop pin, mobile swipe, chips)
-- [ ] Process (route, car, steps)
-- [ ] Founder
-- [ ] Checklist
-- [ ] Numbers (odometer)
-- [ ] Reviews
-- [ ] Coverage (area search)
-- [ ] FAQ
-- [ ] Journal
-- [ ] FinalCta
-- [ ] Footer
-- [ ] WhatsAppFab
-- [ ] OG image, icons, JSON-LD
-- [ ] Commit
+- [x] IntroShutter
+- [x] Hero (+ composer, CSS load, scroll motion)
+- [x] BrandsMarquee
+- [x] Services (desktop pin, mobile swipe, chips)
+- [x] Process (route, car, steps)
+- [x] Founder
+- [x] Checklist
+- [x] Numbers (odometer)
+- [x] Reviews
+- [x] Coverage (area search)
+- [x] FAQ
+- [x] Journal
+- [x] FinalCta
+- [x] Footer
+- [x] WhatsAppFab
+- [x] OG image, icons, JSON-LD
+- [x] Gate: real content in every section; zero console errors or warnings and zero axe violations at 390 and 1440, with and without reduced motion (`scripts/qa-a11y.mjs`); 390 and 1440 screenshots reviewed
+- [x] Commit
 
 ## Phase 5: QA loop
 - [ ] Screenshots at 390×844, 768×1024, 1440×900, 1920×1080
-- [ ] Critique pass 1 and fixes
+- [x] Critique pass 1 and fixes (390 and 1440: odometer alignment, two-column readings on phones, marquee edge fade, composer name placeholder, final CTA overlay, footer links and grid)
 - [ ] Critique pass 2 and fixes
-- [ ] Menu stress test, keyboard, screen reader names, reduced motion
-- [ ] axe
+- [x] Menu stress test, keyboard, screen reader names, reduced motion (`qa-menu.mjs`)
+- [x] axe (`qa-a11y.mjs`, 4/4 clean)
+- [ ] Reduced-motion screenshots reviewed
 - [ ] Lighthouse mobile and desktop (production build); SEO with noindex off
 - [ ] First-load JS and hero bytes measured
 - [ ] Commit
@@ -76,3 +78,6 @@ Keep this file current. After any context compaction, re-read `docs/PLAN.md`, th
 
 ## Notes and decisions log
 - 2026-10-09: Plan approved without edits.
+- 2026-10-09: Phases 3 and 4 committed together. The Phase 3 gate (menu frame timing at 4x CPU) was only met after the sections were built, so there was no clean point for a separate Phase 3 commit that builds on its own.
+- 2026-10-09: Menu performance. The body `position: fixed` lock was replaced by a touch-only lock (no relayout, scroll position never moves), the menu content stays mounted (hidden and inert while closed), and page `inert` lands 800 ms after opening. Tab and Shift+Tab are wrapped inside the sheet from the first frame, so focus never escapes during that window.
+- 2026-10-09: Reviews carousel slides are `div role="group"` (axe `list` rule).

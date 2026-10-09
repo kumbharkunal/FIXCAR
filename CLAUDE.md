@@ -16,7 +16,7 @@ After any context compaction, re-read PLAN, PROGRESS and this file before contin
 - `npm run lint` (ESLint flat config, `eslint .`; `next lint` no longer exists in Next 16)
 - `npm run typecheck` (`tsc --noEmit`)
 - `npm run assets:placeholders`, `npm run assets:logo`
-- `npm run qa:shots`, `qa:menu`, `qa:a11y`, `qa:lighthouse`, `qa:js` (run against `npm run start` on port 3000)
+- `npm run qa:shots`, `qa:menu`, `qa:a11y`, `qa:lighthouse`, `qa:js` (run against `npm run start -- -p 3100`; port 3000 may be taken by another app)
 
 ## Content
 - Every piece of business content lives in `src/content/site.ts`. Components never hard-code copy, phone numbers or URLs.

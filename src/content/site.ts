@@ -128,6 +128,13 @@ export const ui = {
   playBrands: "Play the brand list",
   previousReview: "Previous review",
   nextReview: "Next review",
+  mainNav: "Main",
+  footerNav: "Footer",
+  servicesNav: "Services",
+  brandsTitle: "Car brands we service",
+  reviewsCarousel: "Customer reviews",
+  askOnWhatsApp: "Ask on WhatsApp",
+  step: (n: number) => `Step ${n}: `,
 } as const;
 
 /* ------------------------------------------------------------------ */
@@ -500,8 +507,8 @@ export const checklist = {
 export const numbers = {
   title: "Fixcar.in at a glance",
   readings: [
-    { value: business.foundingYear, caption: "Serving Dehradun since" },
-    { value: areas.length, caption: "localities we cover" },
+    { value: business.foundingYear, caption: "the year Fixcar.in started in Dehradun" },
+    { value: areas.length, caption: "localities we cover across the city" },
     { value: brands.length, caption: "car brands we service" },
   ],
 } as const;
@@ -696,6 +703,7 @@ export const booking = {
     area: "Area",
     areaPlaceholder: "Your area",
     when: "When",
+    whenAnyTime: "Any time",
     whenOptions: [
       { value: "today", label: "Today" },
       { value: "tomorrow", label: "Tomorrow" },
@@ -703,6 +711,8 @@ export const booking = {
     ] satisfies readonly { value: When; label: string }[],
     date: "Date",
     name: "Your name (optional)",
+    nameShort: "Your name",
+    nameOptional: "Optional",
   },
   previewLabel: "Your WhatsApp message",
   submit: "Book on WhatsApp",
@@ -732,6 +742,7 @@ export const seo = {
   ogDescription:
     "Periodic service, repairs, diagnostics, denting and car wash for every major brand, done at your home or office.",
   ogImageAlt: "Fixcar.in: car service at your gate, anywhere in Dehradun.",
+  ogCardLine: `Doorstep car service for ${brands.length} brands. Book on WhatsApp: ${business.phone.display}`,
   /** Search intents the live site targets today, kept for the new site. */
   intents: [
     "car service in Dehradun",
