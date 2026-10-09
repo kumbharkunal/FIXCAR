@@ -71,10 +71,12 @@ Keep this file current. After any context compaction, re-read `docs/PLAN.md`, th
 - [x] Commit
 
 ## Phase 6: Ship
-- [ ] README
-- [ ] PITCH_NOTES
-- [ ] Final build, lint, typecheck
-- [ ] Commit and summary
+- [x] README (run, env vars, Vercel deploy, swapping photos, editing site.ts, `?accent=blue`, QA scripts, budgets)
+- [x] `docs/ASSETS.md` (manifest, shot list prompts, placeholders, brand assets, logo colours, fonts)
+- [x] `docs/PITCH_NOTES.md` (before and after, client questions, SKDS note, recommendations, launch checklist)
+- [x] `.env.example`; empty `NEXT_PUBLIC_SITE_URL` falls back to the default
+- [x] Final build, lint, typecheck clean; `qa:menu` 22/22, `qa:js` 172.5 KB gzip
+- [x] Commit and summary
 
 ## Notes and decisions log
 - 2026-10-09: Plan approved without edits.

@@ -5,8 +5,9 @@
  */
 const vercelProductionHost = process.env.VERCEL_PROJECT_PRODUCTION_URL;
 
+// `||`, not `??`: an empty value (as copied from .env.example) falls through to the default.
 export const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ??
+  process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
   (vercelProductionHost ? `https://${vercelProductionHost}` : "https://www.fixcar.in");
 
 /** The demo must not compete with the live site: noindex unless explicitly "false". */

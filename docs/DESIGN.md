@@ -80,15 +80,16 @@ The recurring motif is **the line**: the long crossbar of the client's own wordm
 
 ## 3. Typography rules
 
-**Font:** Archivo variable (width 62 to 125, weight 100 to 900), self-hosted by `next/font/google`:
+**Font:** Archivo variable (width 62 to 125, weight 100 to 900), self-hosted through `next/font/local` as a subset of the characters the site uses (`npm run assets:font` fetches it from Google Fonts):
 
 ```ts
-import { Archivo } from "next/font/google";
-export const archivo = Archivo({
-  subsets: ["latin"],
-  axes: ["wdth"],
+import localFont from "next/font/local";
+const archivo = localFont({
+  src: "./fonts/archivo-subset.woff2",
+  weight: "100 900",
   display: "swap",
   variable: "--font-archivo",
+  declarations: [{ prop: "font-stretch", value: "62% 125%" }],
 });
 ```
 
@@ -96,7 +97,7 @@ export const archivo = Archivo({
 --font-sans: var(--font-archivo), "Arial", ui-sans-serif, system-ui, sans-serif;
 ```
 
-One woff2 file (88 KB, latin), preloaded. Digits are tabular with `font-variant-numeric: tabular-nums`.
+One woff2 file (60.8 KB: printable ASCII plus © ‘ ’ “ ” … × ₹ and the non-breaking space), preloaded through a `Link` header. The `font-stretch` range in `declarations` is what lets `font-stretch` drive the width axis. Digits are tabular with `font-variant-numeric: tabular-nums`.
 
 | Role | Size | Weight | Width | Line height | Tracking |
 |---|---|---|---|---|---|

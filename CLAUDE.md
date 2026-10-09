@@ -15,8 +15,9 @@ After any context compaction, re-read PLAN, PROGRESS and this file before contin
 - `npm run dev`, `npm run build`, `npm run start`
 - `npm run lint` (ESLint flat config, `eslint .`; `next lint` no longer exists in Next 16)
 - `npm run typecheck` (`tsc --noEmit`)
-- `npm run assets:placeholders`, `npm run assets:logo`
+- `npm run assets:placeholders`, `npm run assets:logo`, `npm run assets:icons`, `npm run assets:font`
 - `npm run qa:shots`, `qa:menu`, `qa:a11y`, `qa:lighthouse`, `qa:js` (run against `npm run start -- -p 3100`; port 3000 may be taken by another app)
+- Lighthouse numbers that match PageSpeed on Vercel: `npm run qa:h2` (HTTP/2 proxy, certificate steps in README) and `QA_URL=https://localhost:3443 npm run qa:lighthouse`. Plain localhost is HTTP/1.1 and overstates LCP.
 
 ## Content
 - Every piece of business content lives in `src/content/site.ts`. Components never hard-code copy, phone numbers or URLs.
@@ -29,11 +30,15 @@ After any context compaction, re-read PLAN, PROGRESS and this file before contin
 - Light theme only. One accent: racing green. Tokens only (no raw hex in components). See `docs/DESIGN.md`.
 - Radius: pill (999px) for nav, buttons, chips, inputs, FAB; 28px for photo frames, sheets, the job card. Nothing else. Full-bleed means no radius.
 - Glass only on the nav pill, mobile menu sheet, WhatsApp FAB and the hero composer bar.
-- Typeface: Archivo variable only (wdth + wght), via `next/font/google`. The width axis animates only in the hero.
+- Typeface: Archivo variable only (wdth + wght), self-hosted as a character subset through `next/font/local` (`src/app/fonts/archivo-subset.woff2`, regenerate with `npm run assets:font` if the copy needs a new character). The width axis animates only in the hero.
 - Numbered markers only in the doorstep process. No pills or labels on photos (captions go below).
 
 ## Code rules
 - Server components by default. Client components only for interaction or animation, kept as small leaf islands.
+- Photos: render through `Photo` (`src/components/ui/Photo.tsx`, next/image `getImageProps` on the server). Never use next/image `<Image>` in sections: it ships the client image component.
+- Icons inside client components: render Phosphor's SSR icons (`@phosphor-icons/react/dist/ssr/*`) in the server parent and pass them in as props, so icons add no client JavaScript.
+- Repeated vectors (the wordmark, social marks) come from `SvgSprite` via `<use>`; never inline their path data again.
+- Below-the-fold sections carry `cv-auto` (`content-visibility: auto`). Anything that measures layout must run after `renderSectionsGradually()` (IdleMount and SmoothScroll already wait for it) or call `renderAllSections()` first (anchor scrolling does).
 - GSAP: only inside motion modules under `src/components/**/motion/`, loaded with `next/dynamic(..., { ssr: false })` from a client loader, using `useGSAP({ scope })` from `@gsap/react`. Plugins are registered once in `src/lib/gsap.ts`. Use `gsap.matchMedia()` for desktop, mobile and reduced-motion branches. Never call GSAP during SSR.
 - Motion: `LazyMotion` + `m` (from `motion/react`), `domMax` loaded async. Use motion values (`useMotionValue`, `useScroll`, `useMotionValueEvent`), never React state, for continuous values.
 - Never let two libraries animate the same property on the same element.
