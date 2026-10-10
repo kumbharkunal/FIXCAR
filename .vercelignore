@@ -1,0 +1,6 @@
+# Keep CLI uploads (`vercel deploy`) to what the build needs. Git deploys already skip these.
+qa
+screens
+.env
+.env.*
+!.env.example
