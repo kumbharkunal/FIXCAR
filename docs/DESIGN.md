@@ -300,10 +300,13 @@ Native `<details name="faq">` makes it exclusive (one open at a time) with corre
 ```
 
 ### Workshop map (footer)
-- A row in the footer: "Our workshop" with the address and a "Get directions" button (cols 1 to 4), the Google Maps embed of the Business Profile in a 28 px frame (cols 5 to 12, 16:7; 4:3 on phones). The frame has a 1 px limewash ring at 14% on the racing surface.
+- A row in the footer: "Our workshop" with the address, "Get directions" on the right, and below them the Google Maps embed of the Business Profile across the full content width: 3:1 on desktop (at most 26rem tall), 16:9 on tablets, square on phones. Radius 28 px on all four corners (border-radius plus a rounded `clip-path`, so the corners stay round while the map moves), with a 1 px limewash ring at 16% drawn above the map.
 - The map rests in a warm, slightly muted tint (`grayscale(0.3) sepia(0.14)`) that sits in the palette; hover or focus restores full colour (0.8 s).
 - Loading: the iframe is only added within about 900 px of the viewport (Google's map scripts are heavy and never load with the page). Until it loads, a gently bobbing MapPin and "Loading the map" sit in the frame; the map then fades in.
 - Motion (FooterMotion, GSAP): the frame opens like a shutter (`clip-path` from the bottom, 1.2 s expo.out) while the map settles from 1.12 to 1 inside it and the address column rises in. Reduced motion: no shutter, no bob, no fades.
+
+### Scrollbars
+On mouse and trackpad devices: a racing-green pill (42% opacity, 70% on hover, solid while dragging) on a limewash track for the page; inner scrollers (dropdown lists, booking sheet, menu) use a transparent track and a slimmer pill kept clear of their rounded corners. Firefox gets the same colours through `scrollbar-color`. Touch screens keep native overlay scrollbars.
 
 ### Floating WhatsApp button
 ```css

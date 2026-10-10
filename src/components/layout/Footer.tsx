@@ -73,18 +73,18 @@ export function Footer() {
         </div>
       </div>
 
-      {/* The workshop: address, directions and the map. */}
-      <div className="container-x mt-16 grid gap-8 lg:mt-20 lg:grid-cols-12 lg:items-end lg:gap-6">
-        <div className="lg:col-span-4" data-map-text>
-          <h2 className="type-small text-limewash/75">{footer.columns.workshop}</h2>
-          <address className="type-lead mt-4 max-w-[24ch] not-italic">{business.address.full}</address>
-          <div className="mt-6">
-            <a className="btn btn-ghost min-h-12" href={business.google.directionsUrl} target="_blank" rel="noopener noreferrer">
-              {ui.getDirections}
-            </a>
+      {/* The workshop: address and directions above a full-width map. */}
+      <div className="container-x mt-16 lg:mt-24">
+        <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-6" data-map-text>
+          <div>
+            <h2 className="type-small text-limewash/75">{footer.columns.workshop}</h2>
+            <address className="type-lead mt-3 max-w-[34ch] not-italic">{business.address.full}</address>
           </div>
+          <a className="btn btn-ghost min-h-12 shrink-0" href={business.google.directionsUrl} target="_blank" rel="noopener noreferrer">
+            {ui.getDirections}
+          </a>
         </div>
-        <div className="lg:col-span-8">
+        <div className="mt-8 lg:mt-10">
           <MapEmbed
             src={business.google.mapEmbedUrl}
             title={footer.mapTitle}
