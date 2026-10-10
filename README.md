@@ -15,6 +15,12 @@ npm run build
 npm run start -- -p 3100     # production build on http://localhost:3100
 ```
 
+### Testing on a phone
+
+Open the "Network" address that `npm run dev` prints (for example `http://192.168.1.20:3000`) on a phone on the same Wi-Fi. `next.config.ts` allows private LAN addresses through `allowedDevOrigins`; without it Next.js 16 serves the page but blocks its scripts, so the menu and the animations do nothing. For a true feel of the motion, test the production build instead (`npm run build && npm run start`, same address): dev mode is unminified and much slower on a phone. Windows may ask once to let Node.js through the firewall.
+
+Phones get a lighter motion set than desktop on purpose: native scrolling instead of Lenis, a swipeable services rail instead of the pinned one, and a vertical process line instead of the pinned route. The hero load, parallax, founder reveal, checklist ticks, odometer, footer wipe, menu and booking sheet all run on phones.
+
 ## Where things live
 
 ```

@@ -15,6 +15,10 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
   poweredByHeader: false,
+  // `next dev` only serves its scripts to localhost by default, so a phone on the same Wi-Fi
+  // (http://192.168.x.x:3000) got the HTML but no JavaScript: no menu, no motion.
+  // Private LAN ranges only; production builds ignore this.
+  allowedDevOrigins: ["10.*.*.*", "192.168.*.*", "172.*.*.*"],
   images: {
     formats: ["image/avif", "image/webp"],
     qualities: [60, 75],
