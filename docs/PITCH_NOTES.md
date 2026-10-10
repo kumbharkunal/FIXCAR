@@ -75,7 +75,7 @@ The first testimonial on the current site is from "Siddharth Kapoor Design Studi
 6. **A Hindi version** of the homepage for customers who prefer it.
 7. **Full site on the same system,** with every current URL kept as it is: `/about-fixcar`, `/contact`, `/blog`, and all ten `/post/<slug>` URLs. Anything that must move gets a 301 redirect (list in `docs/CONTENT.md`).
 8. **Carry over Google Ads and Google Tag Manager** from the Wix site at launch, so conversion tracking keeps working. Track WhatsApp and call taps as conversions.
-9. **A short privacy page,** needed once analytics and ads tracking run.
+9. **A short privacy page,** needed once analytics and ads tracking run. The footer's Google Maps embed also sets Google cookies when it loads (it only loads near the bottom of the page).
 10. **Hosting on the client's own Vercel Pro account.** Vercel's free Hobby plan is for non-commercial use only; a business site needs Pro (about $20 a month per member). Custom analytics events also need Pro.
 
 ## Showing the demo

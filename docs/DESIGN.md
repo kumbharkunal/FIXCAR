@@ -299,6 +299,12 @@ Native `<details name="faq">` makes it exclusive (one open at a time) with corre
 .icon-btn:disabled { opacity: 0.35; }
 ```
 
+### Workshop map (footer)
+- A row in the footer: "Our workshop" with the address and a "Get directions" button (cols 1 to 4), the Google Maps embed of the Business Profile in a 28 px frame (cols 5 to 12, 16:7; 4:3 on phones). The frame has a 1 px limewash ring at 14% on the racing surface.
+- The map rests in a warm, slightly muted tint (`grayscale(0.3) sepia(0.14)`) that sits in the palette; hover or focus restores full colour (0.8 s).
+- Loading: the iframe is only added within about 900 px of the viewport (Google's map scripts are heavy and never load with the page). Until it loads, a gently bobbing MapPin and "Loading the map" sit in the frame; the map then fades in.
+- Motion (FooterMotion, GSAP): the frame opens like a shutter (`clip-path` from the bottom, 1.2 s expo.out) while the map settles from 1.12 to 1 inside it and the address column rises in. Reduced motion: no shutter, no bob, no fades.
+
 ### Floating WhatsApp button
 ```css
 .fab { position: fixed; z-index: 40; right: max(1rem, env(safe-area-inset-right)); bottom: calc(1rem + env(safe-area-inset-bottom)); width: 3.5rem; height: 3.5rem; border-radius: 999px; display: grid; place-items: center; }

@@ -73,6 +73,9 @@ export const business = {
     profileUrl: `https://www.google.com/maps/place/?q=place_id:${placeId}`,
     reviewsUrl: `https://search.google.com/local/reviews?placeid=${placeId}`,
     directionsUrl: `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(addressForMaps)}&destination_place_id=${placeId}`,
+    /** Google Maps embed of the Business Profile (no API key needed). */
+    mapEmbedUrl:
+      "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2048.16076567717!2d78.05271191021797!3d30.30595666063414!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39092b604a78b9c1%3A0x4ef9dedf84fbdc85!2sFixcar.in%20%7C%20Doorstep%20Car%20Service%20%7C%20Best%20Car%20Mechanics%20in%20Dehradun!5e0!3m2!1sen!2sin!4v1791615133576!5m2!1sen!2sin",
   },
   social: {
     instagram: {
@@ -678,7 +681,10 @@ export const footer = {
     explore: "Explore",
     services: "Services",
     follow: "Follow",
+    workshop: "Our workshop",
   },
+  mapTitle: "Map of the Fixcar.in workshop in Dalanwala, Dehradun",
+  mapLoading: "Loading the map",
   blogLink: "Blog",
   copyright: "© 2026 Fixcar.in",
   liveSiteNote: "This is a design demo. The live site is fixcar.in.",

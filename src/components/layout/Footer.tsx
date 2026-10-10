@@ -1,8 +1,10 @@
+import { MapPinIcon } from "@phosphor-icons/react/dist/ssr/MapPin";
+import { FooterMotionLoader } from "@/components/motion/loaders";
 import { BrandLogo } from "@/components/ui/BrandLogo";
+import { MapEmbed } from "@/components/ui/MapEmbed";
 import { Wordmark } from "@/components/ui/Wordmark";
 import { business, footer, navLinks, services, ui } from "@/content/site";
 import { waLink } from "@/lib/whatsapp";
-import { FooterMotionLoader } from "@/components/motion/loaders";
 
 export function Footer() {
   return (
@@ -36,15 +38,6 @@ export function Footer() {
                 </a>
               </li>
             </ul>
-            <address className="mt-4 max-w-[22ch] not-italic type-small text-limewash/75">{business.address.full}</address>
-            <a
-              className="link footer-link mt-2 inline-flex min-h-11 items-center type-small"
-              href={business.google.directionsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {ui.getDirections}
-            </a>
           </div>
 
           <nav aria-label={ui.footerNav}>
@@ -77,6 +70,31 @@ export function Footer() {
               ))}
             </ul>
           </div>
+        </div>
+      </div>
+
+      {/* The workshop: address, directions and the map. */}
+      <div className="container-x mt-16 grid gap-8 lg:mt-20 lg:grid-cols-12 lg:items-end lg:gap-6">
+        <div className="lg:col-span-4" data-map-text>
+          <h2 className="type-small text-limewash/75">{footer.columns.workshop}</h2>
+          <address className="type-lead mt-4 max-w-[24ch] not-italic">{business.address.full}</address>
+          <div className="mt-6">
+            <a className="btn btn-ghost min-h-12" href={business.google.directionsUrl} target="_blank" rel="noopener noreferrer">
+              {ui.getDirections}
+            </a>
+          </div>
+        </div>
+        <div className="lg:col-span-8">
+          <MapEmbed
+            src={business.google.mapEmbedUrl}
+            title={footer.mapTitle}
+            placeholder={
+              <>
+                <MapPinIcon size={30} weight="fill" className="map-pin" />
+                <span>{footer.mapLoading}</span>
+              </>
+            }
+          />
         </div>
       </div>
 
