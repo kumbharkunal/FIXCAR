@@ -216,17 +216,24 @@ The closed pill and the open sheet are the same element (Motion layout animation
 .input:focus-visible { outline: 2px solid var(--color-racing); outline-offset: 2px; border-color: var(--color-racing); }
 .input:disabled { opacity: 0.5; }
 .input::placeholder { color: var(--color-stone); }
-select.input { padding-inline-end: 2.75rem; }  /* a Phosphor CaretDown sits in the end padding */
 
 .segment { display: inline-flex; gap: 0.25rem; padding: 0.25rem; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--color-stone); }
 .segment label { min-height: 2.5rem; padding-inline: 1rem; display: inline-flex; align-items: center; border-radius: 999px; cursor: pointer; }
 .segment input:checked + label { background: var(--color-racing); color: var(--color-limewash); }
 .segment input:focus-visible + label { outline: 2px solid var(--color-racing); outline-offset: 2px; }
 ```
-Labels sit above inputs; helper text sits below. No placeholder-as-label. The area field uses a native `<datalist>`; service and brand use native `<select>` (OS pickers on phones).
+Labels sit above inputs; helper text sits below. No placeholder-as-label.
+
+### Dropdowns, area suggestions and the calendar
+Native `<select>`, `<datalist>` and `<input type="date">` cannot be styled (their pop-ups look like the operating system's), so the composer uses its own accessible versions in `src/components/booking/`:
+- **Select** (service, car brand, and "When" in the bar): the WAI-ARIA select-only combobox. The field is the `.input` pill with a CaretDown that turns 180° when open. The placeholder lives in the field, never in the list.
+- **AreaCombobox:** the area input with a suggestion list that filters as you type, local names included ("ghanta" suggests Clock Tower). Free text is still accepted.
+- **Calendar:** a Sunday-first month grid (India's convention), loaded only when "Pick a date" is chosen. Past days are muted and disabled, today has a 1.5 px racing ring, the picked day is filled racing with limewash text. Day cells are 44 px circles. Inline in the booking sheet (inside a stone-outlined 28 px panel); a popover under "When" in the desktop bar.
+- **Pop-up surface (lists and the bar calendar):** paper, radius 28 px, `0 0 0 1px` ink at 10% plus `0 18px 44px` ink at 14%, entering with a 0.45 s fade and 4 px drop (off for reduced motion). Options are 44 px pill rows; the highlighted one has a racing tint (outlined for keyboard users); the chosen one is racing, semibold, with a Check.
+- Keyboard: arrows, Home, End, Page Up and Down, Enter or Space, Escape, Tab, and type-to-jump in lists; arrows by day and week, Page Up and Down by month in the calendar. Escape inside a list closes only the list, not the booking sheet.
 
 ### Booking composer bar (desktop hero) and booking sheet
-- **Bar:** a glass pill, about 72 px tall, with inline selects separated by hairlines and a primary "Book on WhatsApp" at the end. It sits on the limewash above the photo.
+- **Bar:** a glass pill, about 72 px tall, with inline fields separated by hairlines and a primary "Book on WhatsApp" at the end. Service and car brand get a larger share of the width (their placeholders are longest), the name field a smaller one. It sits on the limewash above the photo.
 - **Sheet:** paper, radius 28 px, with the sheet shadow.
   - Mobile: it slides up from the bottom, drag to dismiss, max height `calc(100dvh - 1.5rem)`, bottom padding `env(safe-area-inset-bottom)`.
   - Desktop: a centred dialog, max width 32rem.
@@ -325,10 +332,11 @@ html { scroll-padding-top: 6rem; scroll-padding-bottom: 6rem; }
 | Hairline | `0 0 0 1px var(--color-hairline)` | job card edge, chips |
 | Glass | the `.glass` recipe above | nav pill, menu sheet, FAB, hero composer bar |
 | Sheet | `0 24px 64px rgb(var(--rgb-ink) / 0.16)` | menu sheet, booking sheet |
+| Pop-up | `0 0 0 1px` ink 10% + `0 18px 44px` ink 14% | dropdown lists, the bar's calendar |
 
 No card shadows anywhere else. Shadows are tinted with ink, never black.
 
-**z-index scale:** content 0, FAB 40, nav 50, backdrop 60, sheet 70, intro 100, skip link 110.
+**z-index scale:** content 0, pop-ups 40 (within their field), FAB 40, nav 50, backdrop 60, sheet 70, intro 100, skip link 110.
 
 ## 7. Animation and interaction
 

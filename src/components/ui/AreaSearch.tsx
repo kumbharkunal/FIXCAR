@@ -4,16 +4,9 @@ import { AnimatePresence, LayoutGroup } from "motion/react";
 import * as m from "motion/react-m";
 import { useDeferredValue, useId, useMemo, useState, type ReactNode } from "react";
 import { BrandLogo } from "@/components/ui/BrandLogo";
-import { areaAliases, areas, coverage, workshopArea, whatsappCopy, type Area } from "@/content/site";
+import { areas, coverage, workshopArea, whatsappCopy, type Area } from "@/content/site";
+import { areaForAlias, normalizeArea as normalize } from "@/lib/areas";
 import { waLink } from "@/lib/whatsapp";
-
-const normalize = (text: string) =>
-  text
-    .toLowerCase()
-    .normalize("NFKD")
-    .replace(/[^a-z0-9]/g, "");
-
-const aliasIndex = new Map(Object.entries(areaAliases).map(([alias, area]) => [normalize(alias), area]));
 
 interface Result {
   list: readonly Area[];
@@ -24,7 +17,7 @@ interface Result {
 function search(query: string): Result {
   const q = normalize(query);
   if (!q) return { list: areas, count: areas.length };
-  const alias = aliasIndex.get(q);
+  const alias = areaForAlias(q);
   const found = areas.filter((area) => normalize(area).includes(q) || alias === area);
   const exact = alias ?? areas.find((area) => normalize(area) === q) ?? (found.length === 1 ? found[0] : undefined);
   return { list: found, match: exact, count: found.length };

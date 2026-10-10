@@ -1,12 +1,39 @@
 "use client";
 
 import { track } from "@vercel/analytics";
-import { useId, useState, type FormEvent, type ReactNode } from "react";
+import dynamic from "next/dynamic";
+import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { BrandLogo } from "@/components/ui/BrandLogo";
-import { areas, booking, brands, business, services, whatsappCopy, type When } from "@/content/site";
+import { booking, brands, business, services, whatsappCopy, type When } from "@/content/site";
 import { cn } from "@/lib/cn";
 import { buildBookingMessage, waLink } from "@/lib/whatsapp";
+import { AreaCombobox } from "./AreaCombobox";
 import type { BookingPrefill } from "./BookingContext";
+import { Select, type SelectOption } from "./Select";
+
+// The calendar only loads once someone chooses "Pick a date".
+const Calendar = dynamic(() => import("./Calendar").then((mod) => mod.Calendar), {
+  ssr: false,
+  loading: () => <div className="calendar-placeholder" aria-hidden />,
+});
+
+// The placeholder lives in the field, not in the list.
+const serviceOptions: SelectOption[] = [
+  ...services.map((item) => ({ value: item.id, label: item.name })),
+  { value: "other", label: booking.fields.serviceOther },
+];
+const brandOptions: SelectOption[] = [
+  ...brands.map((item) => ({ value: item, label: item })),
+  { value: "other", label: booking.fields.brandOther },
+];
+const whenOptions: SelectOption[] = [{ value: "", label: booking.fields.whenAnyTime }, ...booking.fields.whenOptions];
+
+const shortDate = new Intl.DateTimeFormat("en-IN", { weekday: "short", day: "numeric", month: "short" });
+/** "Sat, 11 Oct" for a yyyy-mm-dd date. */
+function formatShortDate(iso: string) {
+  const [year, month, day] = iso.split("-").map(Number);
+  return shortDate.format(new Date(year, month - 1, day));
+}
 
 interface BookingComposerProps {
   /** "bar": the glass pill in the desktop hero. "sheet": the full form in the booking sheet. */
@@ -15,13 +42,6 @@ interface BookingComposerProps {
   source: string;
   onSubmitted?: () => void;
   className?: string;
-}
-
-/** The earliest bookable date (today, local time), set on the date input after it mounts. */
-function setMinToToday(input: HTMLInputElement | null) {
-  if (!input || input.min) return;
-  const now = new Date();
-  input.min = new Date(now.getTime() - now.getTimezoneOffset() * 60_000).toISOString().slice(0, 10);
 }
 
 /** Opens WhatsApp in a new tab or the app, from a user gesture. */
@@ -47,6 +67,8 @@ export function BookingComposer({ variant, initial, source, onSubmitted, classNa
   const [when, setWhen] = useState<When | "">("");
   const [date, setDate] = useState("");
   const [name, setName] = useState("");
+  const [calendarOpen, setCalendarOpen] = useState(false);
+  const calendarRef = useRef<HTMLDivElement>(null);
 
   const service = services.find((item) => item.id === serviceId);
   const message = buildBookingMessage({
@@ -57,6 +79,28 @@ export function BookingComposer({ variant, initial, source, onSubmitted, classNa
     date,
     name,
   });
+
+  /** Closes the bar's calendar; without a picked date, "When" goes back to "Any time". */
+  const closeCalendar = (picked?: string, refocus = true) => {
+    setCalendarOpen(false);
+    if (picked) setDate(picked);
+    else if (!date) setWhen("");
+    if (refocus) document.getElementById(`${id}-when`)?.focus();
+  };
+
+  // A pointer press outside the open calendar closes it.
+  const closeCalendarRef = useRef(closeCalendar);
+  useEffect(() => {
+    closeCalendarRef.current = closeCalendar;
+  });
+  useEffect(() => {
+    if (!calendarOpen) return;
+    const onPointerDown = (event: PointerEvent) => {
+      if (!calendarRef.current?.contains(event.target as Node)) closeCalendarRef.current(undefined, false);
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [calendarOpen]);
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -72,88 +116,62 @@ export function BookingComposer({ variant, initial, source, onSubmitted, classNa
     onSubmit,
   };
   const fallbackText = <input type="hidden" name="text" value={whatsappCopy.generic} />;
-  const areaList = (
-    <datalist id={`${id}-areas`}>
-      {areas.map((item) => (
-        <option key={item} value={item} />
-      ))}
-    </datalist>
-  );
-
-  const serviceOptions = (
-    <>
-      <option value="">{booking.fields.servicePlaceholder}</option>
-      {services.map((item) => (
-        <option key={item.id} value={item.id}>
-          {item.name}
-        </option>
-      ))}
-      <option value="other">{booking.fields.serviceOther}</option>
-    </>
-  );
-  const brandOptions = (
-    <>
-      <option value="">{booking.fields.brandPlaceholder}</option>
-      {brands.map((item) => (
-        <option key={item} value={item}>
-          {item}
-        </option>
-      ))}
-      <option value="other">{booking.fields.brandOther}</option>
-    </>
-  );
-
   if (variant === "bar") {
     return (
       <form {...formProps} className={cn("glass flex items-stretch rounded-pill p-1.5", className)} aria-label={booking.sheetTitle}>
         {fallbackText}
-        <BarField label={booking.fields.service} htmlFor={`${id}-service`}>
-          <select id={`${id}-service`} className="bar-control" value={serviceId} onChange={(e) => setServiceId(e.target.value)}>
-            {serviceOptions}
-          </select>
+        <BarField label={booking.fields.service} htmlFor={`${id}-service`} className="grow-[1.35]">
+          <Select
+            id={`${id}-service`}
+            labelId={`${id}-service-label`}
+            variant="bar"
+            value={serviceId}
+            options={serviceOptions}
+            placeholder={booking.fields.servicePlaceholder}
+            onChange={setServiceId}
+          />
         </BarField>
-        <BarField label={booking.fields.brand} htmlFor={`${id}-brand`}>
-          <select id={`${id}-brand`} className="bar-control" value={brand} onChange={(e) => setBrand(e.target.value)}>
-            {brandOptions}
-          </select>
+        <BarField label={booking.fields.brand} htmlFor={`${id}-brand`} className="grow-[1.35]">
+          <Select
+            id={`${id}-brand`}
+            labelId={`${id}-brand-label`}
+            variant="bar"
+            value={brand}
+            options={brandOptions}
+            placeholder={booking.fields.brandPlaceholder}
+            onChange={setBrand}
+          />
         </BarField>
         <BarField label={booking.fields.area} htmlFor={`${id}-area`}>
-          <input
-            id={`${id}-area`}
-            className="bar-control"
-            list={`${id}-areas`}
-            value={area}
-            autoComplete="off"
-            placeholder={booking.fields.areaPlaceholder}
-            onChange={(e) => setArea(e.target.value)}
-          />
-          {areaList}
+          <AreaCombobox id={`${id}-area`} variant="bar" value={area} placeholder={booking.fields.areaPlaceholder} onChange={setArea} />
         </BarField>
         <BarField label={booking.fields.when} htmlFor={`${id}-when`}>
-          {when === "date" ? (
-            <input
-              id={`${id}-when`}
-              type="date"
-              ref={setMinToToday}
-              className="bar-control"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              onBlur={(e) => {
-                if (!e.target.value) setWhen("");
-              }}
-            />
-          ) : (
-            <select id={`${id}-when`} className="bar-control" value={when} onChange={(e) => setWhen(e.target.value as When | "")}>
-              <option value="">{booking.fields.whenAnyTime}</option>
-              {booking.fields.whenOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          )}
+          <Select
+            id={`${id}-when`}
+            labelId={`${id}-when-label`}
+            variant="bar"
+            value={when}
+            options={whenOptions}
+            placeholder={booking.fields.whenAnyTime}
+            display={when === "date" ? (date ? formatShortDate(date) : booking.fields.datePlaceholder) : undefined}
+            onChange={(next) => {
+              if (next === "date") {
+                setWhen("date");
+                setCalendarOpen(true);
+              } else {
+                setWhen(next as When | "");
+                setDate("");
+                setCalendarOpen(false);
+              }
+            }}
+          />
+          {calendarOpen ? (
+            <div ref={calendarRef} role="dialog" aria-label={booking.fields.calendarLabel} className="popover popover-calendar">
+              <Calendar value={date} autoFocus onChange={(picked) => closeCalendar(picked)} onEscape={() => closeCalendar()} />
+            </div>
+          ) : null}
         </BarField>
-        <BarField label={booking.fields.nameShort} htmlFor={`${id}-name`} className="hidden xl:flex">
+        <BarField label={booking.fields.nameShort} htmlFor={`${id}-name`} className="hidden grow-[0.8] xl:flex">
           <input
             id={`${id}-name`}
             className="bar-control"
@@ -175,43 +193,40 @@ export function BookingComposer({ variant, initial, source, onSubmitted, classNa
     <form {...formProps} className={cn("grid gap-5", className)}>
       {fallbackText}
       <div className="field">
-        <label className="field-label" htmlFor={`${id}-service`}>
+        <label id={`${id}-service-label`} className="field-label" htmlFor={`${id}-service`}>
           {booking.fields.service}
         </label>
-        <div className="select-wrap">
-          <select id={`${id}-service`} className="input" value={serviceId} onChange={(e) => setServiceId(e.target.value)}>
-            {serviceOptions}
-          </select>
-          <span className="select-caret" aria-hidden />
-        </div>
+        <Select
+          id={`${id}-service`}
+          labelId={`${id}-service-label`}
+          variant="field"
+          value={serviceId}
+          options={serviceOptions}
+          placeholder={booking.fields.servicePlaceholder}
+          onChange={setServiceId}
+        />
       </div>
 
       <div className="field">
-        <label className="field-label" htmlFor={`${id}-brand`}>
+        <label id={`${id}-brand-label`} className="field-label" htmlFor={`${id}-brand`}>
           {booking.fields.brand}
         </label>
-        <div className="select-wrap">
-          <select id={`${id}-brand`} className="input" value={brand} onChange={(e) => setBrand(e.target.value)}>
-            {brandOptions}
-          </select>
-          <span className="select-caret" aria-hidden />
-        </div>
+        <Select
+          id={`${id}-brand`}
+          labelId={`${id}-brand-label`}
+          variant="field"
+          value={brand}
+          options={brandOptions}
+          placeholder={booking.fields.brandPlaceholder}
+          onChange={setBrand}
+        />
       </div>
 
       <div className="field">
         <label className="field-label" htmlFor={`${id}-area`}>
           {booking.fields.area}
         </label>
-        <input
-          id={`${id}-area`}
-          className="input"
-          list={`${id}-areas`}
-          value={area}
-          autoComplete="off"
-          placeholder={booking.fields.areaPlaceholder}
-          onChange={(e) => setArea(e.target.value)}
-        />
-        {areaList}
+        <AreaCombobox id={`${id}-area`} variant="field" value={area} placeholder={booking.fields.areaPlaceholder} onChange={setArea} />
       </div>
 
       <fieldset className="field">
@@ -233,11 +248,8 @@ export function BookingComposer({ variant, initial, source, onSubmitted, classNa
           ))}
         </div>
         {when === "date" ? (
-          <div className="field mt-3">
-            <label className="field-label" htmlFor={`${id}-date`}>
-              {booking.fields.date}
-            </label>
-            <input id={`${id}-date`} ref={setMinToToday} type="date" className="input" value={date} onChange={(e) => setDate(e.target.value)} />
+          <div role="group" aria-label={booking.fields.date} className="calendar-panel mt-3">
+            <Calendar value={date} onChange={setDate} />
           </div>
         ) : null}
       </fieldset>
@@ -271,7 +283,7 @@ export function BookingComposer({ variant, initial, source, onSubmitted, classNa
 function BarField({ label, htmlFor, children, className }: { label: string; htmlFor: string; children: ReactNode; className?: string }) {
   return (
     <div className={cn("bar-field", className)}>
-      <label htmlFor={htmlFor} className="text-[0.8125rem] font-semibold leading-none text-stone">
+      <label id={`${htmlFor}-label`} htmlFor={htmlFor} className="text-[0.8125rem] font-semibold leading-none text-stone">
         {label}
       </label>
       {children}

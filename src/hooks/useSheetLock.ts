@@ -16,7 +16,7 @@ interface SheetLockOptions {
 }
 
 const FOCUSABLE =
-  'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+  'a[href]:not([tabindex="-1"]), button:not([disabled]):not([tabindex="-1"]), input:not([disabled]):not([type="hidden"]):not([tabindex="-1"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 /**
  * While `active`: stops Lenis and locks page scroll (iOS-safe), makes the rest of the
@@ -36,6 +36,8 @@ export function useSheetLock(active: boolean, sheetRef: RefObject<HTMLElement | 
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
+        // An open list or calendar inside the sheet handles its own Escape first.
+        if (event.defaultPrevented) return;
         event.preventDefault();
         optionsRef.current.onEscape?.();
         return;

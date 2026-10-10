@@ -50,6 +50,12 @@
 
   color-scheme: light;
   interpolate-size: allow-keywords;
+
+  /* Phosphor icons (bold) as CSS masks: they take the text colour and cost no JavaScript. */
+  --icon-caret-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M216.49,104.49l-80,80a12,12,0,0,1-17,0l-80-80a12,12,0,0,1,17-17L128,159l71.51-71.52a12,12,0,0,1,17,17Z'/%3E%3C/svg%3E");
+  --icon-caret-left: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M168.49,199.51a12,12,0,0,1-17,17l-80-80a12,12,0,0,1,0-17l80-80a12,12,0,0,1,17,17L97,128Z'/%3E%3C/svg%3E");
+  --icon-caret-right: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M184.49,136.49l-80,80a12,12,0,0,1-17-17L159,128,87.51,56.49a12,12,0,1,1,17-17l80,80A12,12,0,0,1,184.49,136.49Z'/%3E%3C/svg%3E");
+  --icon-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M232.49,80.49l-128,128a12,12,0,0,1-17,0l-56-56a12,12,0,1,1,17-17L96,183,215.51,63.51a12,12,0,0,1,17,17Z'/%3E%3C/svg%3E");
 }
 
 /* Repeat visits in the same session: no intro, the hero starts at once. */
@@ -460,27 +466,232 @@
     color: var(--color-stone);
     opacity: 1;
   }
-  select.input {
-    padding-inline-end: 2.75rem;
-    cursor: pointer;
-  }
-  .select-wrap {
-    position: relative;
-  }
-  .select-wrap > .select-caret {
-    position: absolute;
-    inset-inline-end: 1rem;
-    top: 50%;
-    translate: 0 -50%;
-    pointer-events: none;
-    /* Phosphor CaretDown (bold) as a mask, so it takes the text colour and costs no JS. */
+  .mask-icon {
+    display: inline-block;
+    flex: none;
     width: 18px;
     height: 18px;
     background-color: currentColor;
-    -webkit-mask: var(--caret-down) center / contain no-repeat;
-    mask: var(--caret-down) center / contain no-repeat;
-    --caret-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M216.49,104.49l-80,80a12,12,0,0,1-17,0l-80-80a12,12,0,0,1,17-17L128,159l71.51-71.52a12,12,0,0,1,17,17Z'/%3E%3C/svg%3E");
+    -webkit-mask: var(--icon) center / contain no-repeat;
+    mask: var(--icon) center / contain no-repeat;
   }
+  .icon-caret-left {
+    --icon: var(--icon-caret-left);
+  }
+  .icon-caret-right {
+    --icon: var(--icon-caret-right);
+  }
+
+  /* Custom select and area list (booking composer) */
+  .select {
+    position: relative;
+  }
+  .select-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    text-align: start;
+    cursor: pointer;
+  }
+  .select-caret {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    background-color: currentColor;
+    -webkit-mask: var(--icon-caret-down) center / contain no-repeat;
+    mask: var(--icon-caret-down) center / contain no-repeat;
+    transition: rotate var(--dur-2) var(--ease-out-expo);
+  }
+  .select[data-open] .select-caret {
+    rotate: 180deg;
+  }
+  .select.is-bar {
+    /* The list hangs from the whole bar field, just below the bar. */
+    position: static;
+  }
+  .select.is-bar .select-trigger {
+    gap: 0.5rem;
+  }
+  .select.is-bar .select-caret {
+    width: 13px;
+    height: 13px;
+    color: var(--color-stone);
+  }
+
+  .popover {
+    position: absolute;
+    z-index: 40;
+    inset-inline-start: 0;
+    top: calc(100% + 0.5rem);
+    width: 100%;
+    max-height: min(22rem, 60svh);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    padding: 0.375rem;
+    border-radius: var(--radius-sheet);
+    background: var(--color-paper);
+    box-shadow:
+      0 0 0 1px rgb(var(--rgb-ink) / 0.1),
+      0 18px 44px rgb(var(--rgb-ink) / 0.14);
+    transform-origin: top center;
+    animation: popover-in var(--dur-2) var(--ease-out-expo);
+  }
+  .popover[hidden] {
+    display: none;
+  }
+  .select.is-bar .popover,
+  .bar-field > .popover {
+    top: calc(100% + 0.875rem);
+    width: max(100%, 21rem);
+  }
+  .popover-calendar {
+    width: auto;
+    min-width: 21rem;
+    max-height: none;
+    overflow: visible;
+    padding: 1.25rem;
+  }
+
+  .option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 2.75rem;
+    padding-inline: 1rem;
+    border-radius: var(--radius-pill);
+    color: var(--color-ink);
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.25;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color var(--dur-1) var(--ease-out-expo);
+  }
+  .option[data-active] {
+    background: rgb(var(--rgb-racing) / 0.09);
+  }
+  /* Keyboard users get a clear outline on the highlighted option. */
+  .select:has(:focus-visible) .option[data-active] {
+    box-shadow: inset 0 0 0 1.5px rgb(var(--rgb-racing) / 0.5);
+  }
+  .option[aria-selected="true"] {
+    color: var(--color-racing);
+    font-weight: 650;
+  }
+  .option[aria-selected="true"]::after {
+    content: "";
+    flex: none;
+    width: 16px;
+    height: 16px;
+    background-color: currentColor;
+    -webkit-mask: var(--icon-check) center / contain no-repeat;
+    mask: var(--icon-check) center / contain no-repeat;
+  }
+
+  /* Calendar (booking date) */
+  .calendar-panel {
+    padding: 1rem;
+    border-radius: var(--radius-sheet);
+    box-shadow: inset 0 0 0 1px var(--color-stone);
+    background: var(--color-paper);
+  }
+  .calendar {
+    display: grid;
+    gap: 0.75rem;
+  }
+  .calendar-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-inline-start: 0.375rem;
+  }
+  .calendar-title {
+    font-size: 1.0625rem;
+    line-height: 1.2;
+    font-weight: 700;
+    font-stretch: 106%;
+    letter-spacing: -0.01em;
+  }
+  .calendar-nav {
+    display: inline-grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--radius-pill);
+    color: var(--color-ink);
+    box-shadow: inset 0 0 0 1px var(--color-hairline);
+    cursor: pointer;
+    transition: background-color var(--dur-1) var(--ease-out-expo);
+  }
+  .calendar-nav:hover {
+    background: rgb(var(--rgb-ink) / 0.06);
+  }
+  .calendar-nav:disabled {
+    opacity: 0.3;
+    cursor: default;
+    background: transparent;
+  }
+  .calendar-grid {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+  .calendar-grid th {
+    padding-bottom: 0.375rem;
+    color: var(--color-stone);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    text-align: center;
+  }
+  .calendar-grid td {
+    padding-block: 0.125rem;
+    text-align: center;
+  }
+  .calendar-day {
+    display: inline-grid;
+    place-items: center;
+    width: 2.75rem;
+    max-width: 100%;
+    aspect-ratio: 1;
+    border-radius: var(--radius-pill);
+    color: var(--color-ink);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
+    transition:
+      background-color var(--dur-1) var(--ease-out-expo),
+      color var(--dur-1) var(--ease-out-expo);
+  }
+  .calendar-day:hover:not(:disabled) {
+    background: rgb(var(--rgb-ink) / 0.06);
+  }
+  .calendar-day[aria-current="date"] {
+    box-shadow: inset 0 0 0 1.5px var(--color-racing);
+  }
+  .calendar-day.is-selected,
+  .calendar-day.is-selected:hover {
+    background: var(--color-racing);
+    color: var(--color-limewash);
+  }
+  .calendar-day:disabled {
+    color: var(--color-stone);
+    opacity: 0.45;
+    cursor: default;
+  }
+  .calendar-day:focus-visible,
+  .calendar-nav:focus-visible {
+    outline: 2px solid var(--color-racing);
+    outline-offset: 2px;
+  }
+  .calendar-placeholder {
+    height: 21.5rem;
+  }
+
   .segment {
     display: flex;
     flex-wrap: wrap;
@@ -545,7 +756,8 @@
   .bar-field:focus-within {
     background: var(--color-paper);
   }
-  .bar-field:has(:focus-visible) {
+  /* The field's own control only, not the calendar popover hanging from it. */
+  .bar-field:has(> :focus-visible, > .select > :focus-visible) {
     outline: 2px solid var(--color-racing);
     outline-offset: -2px;
   }
@@ -893,6 +1105,12 @@
     transform: none;
   }
 }
+@keyframes popover-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.985);
+  }
+}
 @keyframes hero-fade {
   from {
     opacity: 0;
@@ -1021,6 +1239,12 @@
   .intro,
   .hero-frame-shutter {
     display: none !important;
+  }
+  .popover {
+    animation: none;
+  }
+  .select-caret {
+    transition: none;
   }
   .hero-line > span,
   .hero-title,
